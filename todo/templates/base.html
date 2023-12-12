@@ -1,294 +1,299 @@
 <!-- base.html -->
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Home Page</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-      crossorigin="anonymous"
-    />
-  </head>
-  <body>
-    <nav class="navbar bg-body-primary" id="navi">
-      <div class="container-fluid">
-        <a class="navbar-brand">Stickfy</a>
-        <form class="d-flex" role="search">
-          <input
-            class="form-control me-2"
-            type="search"
-            placeholder="Search"
-            aria-label="Search"
-          />
-          <button class="btn btn-success" type="submit">Search</button>
-          <button
-            id="addbut"
-            type="button"
-            class="btn btn-outline-warning"
-            data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
-          >
-            +
-          </button>
-        </form>
-      </div>
-    </nav>
-    <div class="main">
-      <!-- Modal -->
-      <div
-        class="modal fade"
-        id="exampleModal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="add-task-cont">
-              <div class="addtask">
-                <h2 style="font-weight: bold">New task</h2>
-                <form
-                  method="post"
-                  onsubmit="function subm(e){e.preventDefault()}"
-                >
-                  {% csrf_token %}{{ form.as_p }}
-                  <div class="subButt">
-                    <button
-                      type="submit"
-                      class="btn btn-outline-success"
-                      onclick="rel()"
-                    >
-                      Add Task
-                    </button>
-                  </div>
-                </form>
-              </div>
+
+<head>
+  <title>Home Page</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+</head>
+
+<body>
+  <nav class="navbar bg-body-primary" id="navi">
+    <div class="container-fluid">
+      <a class="navbar-brand" id="title">Sticky</a>
+      <button id="addbut" type="button" class="btn btn-outline-warning" data-bs-toggle="modal"
+        data-bs-target="#exampleModal">
+        +
+      </button>
+    </div>
+  </nav>
+  <div class="main">
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="add-task-cont">
+            <div class="addtask">
+              <h2 style="font-weight: bold">New task</h2>
+              <form method="post" onsubmit="function subm(e){e.preventDefault()}">
+                {% csrf_token %}{{ form.as_p }}
+                <div class="subButt">
+                  <button type="submit" class="btn btn-outline-success" onclick="rel()">
+                    Add Task
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
-      </div>
-      <div id="task-monitored">
-        <div class="card mb-3" id="rem-cont">
-          <div class="card-body" id="card-cont">
-            <h5 class="card-title">Todos</h5>
-            <p class="card-text" id="card-desc">{{alltask}}</p>
-          </div>
-        </div>
-        <div class="card mb-3" id="rem-cont">
-          <div class="card-body" id="card-cont">
-            <h5 class="card-title">Completed</h5>
-            <p class="card-text" id="card-desc">{{deltask}}</p>
-            <span class="badge text-bg-danger">
-              <a href="{% url 'clear' %}" id="reset">reset</a>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div class="task-list">
-        {% for task in tasks%}
-        <div>
-          <div class="card">
-            <div class="card-header">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-list-task"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M2 2.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5zM3 3H2v1h1z"
-                />
-                <path
-                  d="M5 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M5.5 7a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 4a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1z"
-                />
-                <path
-                  fill-rule="evenodd"
-                  d="M1.5 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5zM2 7h1v1H2zm0 3.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm1 .5H2v1h1z"
-                />
-              </svg>
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">{{task.task}}</h5>
-              <p class="card-text">{{task.description}}</p>
-              <a
-                href="{% url 'delete' task.id%}"
-                class="btn btn-success"
-                onclick="done()"
-                >Done</a
-              >
-              <a href="{% url 'update' task.id%}" class="btn btn-warning">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-pencil-square"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
-                  />
-                  <path
-                    fill-rule="evenodd"
-                    d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
-                  />
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
-        {% endfor%}
       </div>
     </div>
-    <script>
-      window.onload = function () {
-        document.querySelector("#id_task").classList.add("form-control");
-        document.querySelector("#id_description").classList.add("form-control");
-      };
+    <div id="task-monitored">
+      <div class="card mb-3" id="rem-cont">
+        <div class="card-body" id="card-cont">
+          <h5 class="card-title">Todos</h5>
+          <p class="card-text" id="card-desc">{{alltask}}</p>
+        </div>
+      </div>
+      <div class="card mb-3" id="rem-cont">
+        <div class="card-body" id="card-cont">
+          <h5 class="card-title">Completed</h5>
+          <p class="card-text" id="card-desc">{{deltask}}</p>
+          <span class="badge text-bg-danger">
+            <a href="{% url 'clear' %}" id="reset">reset</a>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div id="delitems">
+      {% for tasks in deletedtask%}
+     <a href="{% url 'finaldelete' tasks.id%}">
+      <div class="card" style="width: fit-content;">
+        <div class="card-body">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-all"
+            viewBox="0 0 16 16">
+            <path
+              d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992a.252.252 0 0 1 .02-.022zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486-.943 1.179z" />
+          </svg>
+          {{tasks.task}}
+        </div>
+      </div>
+    </a>
+      {% endfor %}
+    </div>
+    <div class="task-list">
+      {% for task in tasks%}
+      <div>
+        <div class="card">
+          <div class="card-header">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-task"
+              viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M2 2.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5zM3 3H2v1h1z" />
+              <path
+                d="M5 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M5.5 7a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 4a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1z" />
+              <path fill-rule="evenodd"
+                d="M1.5 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5zM2 7h1v1H2zm0 3.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm1 .5H2v1h1z" />
+            </svg>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">{{task.task}}</h5>
+            <p class="card-text">{{task.description}}</p>
+            <a href="{% url 'delete' task.id%}" class="btn btn-success" onclick="done()"></a>
+            <a href="{% url 'update' task.id%}" class="btn btn-warning">
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor%}
+    </div>
+  </div>
+  <script>
+    window.onload = function () {
+      document.querySelector("#id_task").classList.add("form-control");
+      document.querySelector("#id_description").classList.add("form-control");
+    };
+    var update = false;
 
-      var update = false;
+    function updatebut() {
+      update = !update;
 
-      function updatebut() {
-        update = !update;
+      if (update) {
+        document.querySelector("#conditionalContent").style.display = "block";
+      } else {
+        document.querySelector("#conditionalContent").style.display = "none";
+      }
+    }
+  </script>
+  <style>
+    a{
+      text-decoration: none;
+      color: black;
+      font-weight: 400;
+    }
+    .card-body{
+      text-decoration: none;
+    }
+    #delitems {
+      margin: 20px;
+      display: flex;
+      width: 100vh;
+      overflow-x: auto;
+    }
 
-        if (update) {
-          document.querySelector("#conditionalContent").style.display = "block";
-        } else {
-          document.querySelector("#conditionalContent").style.display = "none";
-        }
-      }
-    </script>
+    #deltask {
+      background-color: gray;
+    }
 
-    <style>
-      #reset{
-        text-decoration: none;
-        color: #ffff;
-        font-weight: bold;
-      }
-      body {
-        background-color: #d2d7df;
-      }
-      #card-desc{
-        font-size: x-large;
-      }
-      #task-monitored {
-        display: flex;
-        justify-content: center;
-        gap: 5px;
-      }
-      .card-text {
-        font-weight: 600;
-      }
-      #rem-txt {
-        color: #ffff;
-      }
-      #card-cont {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-      h5 {
-        text-transform: uppercase;
-      }
-      #rem-task {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-      #addbut {
-        margin-left: 5px;
-      }
-      #navi {
-        background-color: #ffff;
-        box-shadow: 0 4px 8px rgba(5, 0, 0, 0.1);
-        margin-bottom: 10px;
-      }
-      #update {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-      }
-      .subButt {
-        display: flex;
-        justify-content: center;
-      }
-      p {
-        display: flex;
-        flex-direction: column;
-      }
-      label {
-        text-transform: uppercase;
-        font-weight: 600;
-        font-style: normal;
-      }
-      h2 {
-        margin: 10px;
-        color: green;
-        text-transform: uppercase;
-      }
-      body {
-        padding: 5px;
-      }
-      .add-task-cont {
-        width: full;
-        height: full;
-        display: flex;
-        justify-content: center;
-      }
-      #forms.button {
-        border-radius: 50vh;
-      }
-      .modal-content {
-        display: flex;
-      }
-      .errorlist {
-        visibility: hidden;
-        display: none;
-      }
-      .addtask {
-        padding: 10px;
-        width: fit-content;
-        height: fit-content;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-      }
-      #forms input {
-        border-radius: 50px;
-        padding: 20px;
-      }
-      #id_task,
-      #id_description {
-        padding: 5px;
-      }
-      .focus {
-        border-color: orange;
-      }
-      .tasks {
-        margin: 5vh;
-        width: fit-content;
-        box-shadow: -5px 5px rgba(9, 9, 9, 9);
-        border-color: black;
-        border: solid;
-      }
-      .task-list {
-        display: flex;
-        flex-wrap: wrap;
-      }
-      .card {
-        margin: 5px;
-        width: 30vh;
-      }
-    </style>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+    #title {
+      font-weight: bold;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    }
+
+    #reset {
+      text-decoration: none;
+      color: #ffff;
+      font-weight: bold;
+    }
+
+    body {
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      background-color: #252525;
+    }
+
+    #card-desc {
+      font-size: x-large;
+    }
+
+    #task-monitored {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .card-text {
+      font-weight: 600;
+    }
+
+    #rem-txt {
+      color: #ffff;
+    }
+
+    #card-cont {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h5 {
+      text-transform: uppercase;
+    }
+
+    #rem-task {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #addbut {
+      margin-left: 5px;
+    }
+
+    #navi {
+      background-color: #ffff;
+      box-shadow: 0 4px 8px rgba(5, 0, 0, 0.1);
+      margin-bottom: 10px;
+    }
+
+    #update {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .subButt {
+      display: flex;
+      justify-content: center;
+    }
+
+    p {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      text-transform: uppercase;
+      font-weight: 600;
+      font-style: normal;
+    }
+
+    h2 {
+      margin: 10px;
+      color: green;
+      text-transform: uppercase;
+    }
+
+    body {
+      padding: 5px;
+    }
+
+    .add-task-cont {
+      width: full;
+      height: full;
+      display: flex;
+      justify-content: center;
+    }
+
+    #forms.button {
+      border-radius: 50vh;
+    }
+
+    .modal-content {
+      display: flex;
+    }
+
+    .errorlist {
+      visibility: hidden;
+      display: none;
+    }
+
+    .addtask {
+      padding: 10px;
+      width: fit-content;
+      height: fit-content;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    #forms input {
+      border-radius: 50px;
+      padding: 20px;
+    }
+
+    #id_task,
+    #id_description {
+      padding: 5px;
+    }
+
+    .focus {
+      border-color: orange;
+    }
+
+    .tasks {
+      margin: 5vh;
+      width: fit-content;
+      box-shadow: -5px 5px rgba(9, 9, 9, 9);
+      border-color: black;
+      border: solid;
+    }
+
+    .task-list {
+      margin: 20px;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      margin: 5px;
+      width: 30vh;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+</body>
+
 </html>
